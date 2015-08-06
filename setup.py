@@ -6,7 +6,8 @@ README = open(os.path.join(here, 'README.md')).read()
 CHANGELOG = open(os.path.join(here, 'CHANGELOG.rst')).read()
 
 requires = [
-    'boto==2.29.0',
+    'boto==2.38.0',
+    'moto==0.4.10',
     ]
 
 setup(name='Zambi',
