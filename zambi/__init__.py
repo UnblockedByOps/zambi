@@ -29,24 +29,19 @@ from boto import rds2
 from boto import route53
 from boto.ec2 import elb
 
+
 def clean_env():
     ''' Checks to see if AWS environmental variables are not set. '''
     os_count = 0
     msg = ('WARN: Zambi does not work with shell-environment '
            'AWS credentials, deleting environment '
            'variable and continuing')
-    if os.getenv('AWS_ACCESS_KEY_ID'):
-        print >> sys.stderr, msg
-        del os.environ['AWS_ACCESS_KEY_ID']
-        os_count += 1
-    if os.getenv('AWS_SECRET_ACCESS_KEY'):
-        print >> sys.stderr, msg
-        del os.environ['AWS_SECRET_ACCESS_KEY']
-        os_count += 1
-    if os.getenv('AWS_ACCOUNT_ID'):
-        print >> sys.stderr, msg
-        del os.environ['AWS_ACCOUNT_ID']
-        os_count += 1
+    sys_vars = ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_ACCOUNT_ID']
+    for sys_var in sys_vars:
+        if os.getenv(sys_var):
+            print >> sys.stderr, msg
+            del os.environ[sys_var]
+            os_count += 1
     if os_count:
         return True
     else:
