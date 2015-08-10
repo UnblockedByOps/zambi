@@ -44,18 +44,16 @@ class TestZambi(object):
 
     def test_invalid_conn(self):
         ''' Test invalid connections. '''
-        assert self.cmgr.get_connection('xxxxx', service='s3') == False
-        assert self.cmgr.get_connection('xxxxx', service='ec2') == False
-        assert self.cmgr.get_connection('xxxxx', service='rds') == False
-        assert self.cmgr.get_connection('xxxxx', service='rds2') == False
-        assert self.cmgr.get_connection('xxxxx', service='elb') == False
-        assert self.cmgr.get_connection('xxxxx', service='sqs') == False
-        assert self.cmgr.get_connection('xxxxx', service='emr') == False
-        assert self.cmgr.get_connection('xxxxx', service='route53') == False
-        assert self.cmgr.get_connection('xxxxx', service='iam') == False
+        os.environ['AWS_CRED_DIR'] = os.getcwd() + '/tests'
+        mock = moto.ec2.mock_ec2()
+        mock.start()
+        assert self.cmgr.get_connection('xxxxx') == False
 
     def test_invalid_service(self):
         ''' Test an invalid service. '''
+        os.environ['AWS_CRED_DIR'] = os.getcwd() + '/tests'
+        mock = moto.ec2.mock_ec2()
+        mock.start()
         assert self.cmgr.get_connection('opsqa', service='pizza') == False
 
     def test_valid_conn(self):
